@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Add a New Book</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.price) }}
+    {{ form_row(form.category) }} {# Add this line to display the category dropdown #}
+    {{ form_widget(form.photo) }}
+    <button type="submit">Add Book</button>
+    {{ form_end(form) }}
+{% endblock %}

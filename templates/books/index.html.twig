@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Book List</h1>
+
+    <a href="{{ path('add_book') }}" class="btn btn-primary">Add Book</a> <!-- Add this button -->
+
+    <form action="{{ path('search_books') }}" method="get">
+        <label for="price">Search books with price greater than:</label>
+        <input type="number" name="price" id="price" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th> <!-- Add this line -->
+            <th>Actions</th>
+        </tr>
+        {% for xyz in book %}
+            <tr>
+                <td>{{ xyz.id }}</td>
+                <td>{{ xyz.name }}</td>
+                <td>{{ xyz.price }}</td>
+                <td>{{ xyz.category.name }}</td> <!-- Display the category name -->
+                <td>
+                    <a href="{{ path('view_book', {'id': xyz.id}) }}">View Details</a>
+                    <a href="{{ path('edit_book', {'id': xyz.id}) }}">Edit</a>
+                    <a href="{{ path('delete_book', {'id': xyz.id}) }}" onclick="return confirm('Are you sure you want to delete this book?')">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

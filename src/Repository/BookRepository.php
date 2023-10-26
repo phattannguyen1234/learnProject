@@ -1,0 +1,76 @@
+<?php
+
+namespace App\Repository;
+
+use App\Entity\Book;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+/**
+ * @extends ServiceEntityRepository<Book>
+ *
+ * @method Book|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Book|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Book[]    findAll()
+ * @method Book[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class BookRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Book::class);
+    }
+
+//    /**
+//     * @return Book[] Returns an array of Book objects
+//     */
+//    public function findByExampleField($value): array
+//    {
+//        return $this->createQueryBuilder('b')
+//            ->andWhere('b.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->orderBy('b.id', 'ASC')
+//            ->setMaxResults(10)
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
+
+//    public function findOneBySomeField($value): ?Book
+//    {
+//        return $this->createQueryBuilder('b')
+//            ->andWhere('b.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->getQuery()
+//            ->getOneOrNullResult()
+//        ;
+//    }
+
+    public function findBooksWithPriceGreaterThan($price): array
+    {
+        // This function is equivalent to the following SQL query
+        // SELECT *
+        // FROM books b
+        // WHERE b.price > :price
+
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.price > :price')
+            ->setParameter('price', $price)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllWithCategory()
+    {
+        // This equivalent to the following SQL query
+        // SELECT b.*, c.*
+        // FROM book b
+        // LEFT JOIN category c ON b.category_id = c.id
+
+        return $this->createQueryBuilder('b')
+            ->leftJoin('b.category', 'c')
+            ->addSelect('c')
+            ->getQuery()
+            ->getResult();
+    }
+}
